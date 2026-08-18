@@ -39,11 +39,7 @@ func (s *InferenceService) PlanInferenceRun(ctx context.Context, input PlanInfer
 	if err := domain.ValidateIdempotencyKey(input.IdempotencyKey); err != nil {
 		return domain.InferenceRun{}, err
 	}
-	hash, err := idempotency.HashFields(
-		input.WorkspaceID, input.SourceZoneID, input.TargetZoneID,
-		input.ComputePoolID, input.SnapshotIDs, input.ScheduledStartAt,
-		input.ExpectedFinishAt,
-	)
+	hash, err := idempotency.Hash(input)
 	if err != nil {
 		return domain.InferenceRun{}, err
 	}
